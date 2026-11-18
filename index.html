@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hakim Kalimat: Pilih Kalimat Paling Tepat!</title>
+  <!-- Google Fonts: Fredoka & Nunito ramah anak kelas 1 SD -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      background: linear-gradient(180deg, #0ea5e9 0%, #38bdf8 38%, #bae6fd 72%, #a7f3d0 100%);
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: #0f172a;
+    }
+
+    /* Gaya 3D Claymorphism Ceria */
+    .clay-card {
+      background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
+      border-radius: 30px;
+      box-shadow:
+        0 16px 32px rgba(3, 105, 161, 0.2),
+        inset 0 6px 12px rgba(255, 255, 255, 0.95),
+        inset 0 -8px 16px rgba(186, 230, 253, 0.65);
+      border: 4px solid #ffffff;
+    }
+
+    .clay-bench {
+      background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+      border-radius: 24px;
+      box-shadow:
+        0 10px 0 #9a3412,
+        0 16px 24px rgba(154, 52, 18, 0.3),
+        inset 0 5px 10px rgba(255, 237, 213, 0.65);
+      border: 3px solid #fed7aa;
+    }
+
+    .clay-btn {
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, filter 0.16s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .clay-btn:hover:not(:disabled) {
+      transform: translateY(-4px) scale(1.02);
+      filter: brightness(1.04);
+    }
+
+    .clay-btn:active:not(:disabled) {
+      transform: translateY(3px) scale(0.97);
+    }
+
+    .clay-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .clay-btn-yellow {
+      background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+      box-shadow:
+        0 9px 0 #ca8a04,
+        0 15px 22px rgba(161, 98, 7, 0.3),
+        inset 0 5px 8px rgba(255, 255, 255, 0.85);
+      border: 3px solid #fef9c3;
+      color: #422006;
+    }
+
+    .clay-btn-orange {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      box-shadow:
+        0 9px 0 #c2410c,
+        0 15px 22px rgba(194, 65, 12, 0.32),
+        inset 0 5px 8px rgba(255, 237, 213, 0.75);
+      border: 3px solid #ffedd5;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(154, 52, 18, 0.45);
+    }
+
+    .clay-btn-mint {
+      background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+      box-shadow:
+        0 9px 0 #047857,
+        0 15px 22px rgba(4, 120, 87, 0.3),
+        inset 0 5px 8px rgba(209, 250, 229, 0.8);
+      border: 3px solid #d1fae5;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(6, 78, 59, 0.45);
+    }
+
+    .clay-btn-sky {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      box-shadow:
+        0 8px 0 #0369a1,
+        0 12px 20px rgba(3, 105, 161, 0.3),
+        inset 0 4px 7px rgba(224, 242, 254, 0.8);
+      border: 3px solid #e0f2fe;
+      color: #ffffff;
+      text-shadow: 0 2px 3px rgba(7, 89, 133, 0.4);
+    }
+
+    /* Kartu Pilihan Jawaban A, B, C */
+    .choice-card {
+      border-radius: 24px;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease, opacity 0.25s ease;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .choice-card:hover:not(:disabled) {
+      transform: translateY(-4px) scale(1.015);
+    }
+
+    .choice-card:active:not(:disabled) {
+      transform: translateY(3px) scale(0.985);
+    }
+
+    .choice-card-a {
+      background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 100%);
+      border: 4px solid #38bdf8;
+      box-shadow: 0 8px 0 #0284c7, 0 12px 20px rgba(2, 132, 199, 0.18);
+    }
+
+    .choice-card-b {
+      background: linear-gradient(180deg, #ffffff 0%, #fef9c3 100%);
+      border: 4px solid #facc15;
+      box-shadow: 0 8px 0 #ca8a04, 0 12px 20px rgba(202, 138, 4, 0.18);
+    }
+
+    .choice-card-c {
+      background: linear-gradient(180deg, #ffffff 0%, #d1fae5 100%);
+      border: 4px solid #34d399;
+      box-shadow: 0 8px 0 #059669, 0 12px 20px rgba(5, 150, 105, 0.18);
+    }
+
+    .choice-card.wrong-picked {
+      background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+      border-color: #fb7185;
+      box-shadow: 0 4px 0 #e11d48;
+      opacity: 0.68;
+      cursor: not-allowed;
+    }
+
+    .choice-card.correct-picked {
+      background: linear-gradient(180deg, #ecfdf5 0%, #a7f3d0 100%);
+      border-color: #10b981;
+      box-shadow: 0 8px 0 #047857, 0 0 0 6px rgba(52, 211, 153, 0.35);
+      transform: scale(1.02);
+    }
+
+    /* Animasi Halus */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1deg); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.75) translateY(14px); }
+      75% { opacity: 1; transform: scale(1.04) translateY(-2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes gavelStrike {
+      0% { transform: rotate(-38deg); }
+      22% { transform: rotate(18deg); }
+      38% { transform: rotate(-24deg); }
+      56% { transform: rotate(18deg); }
+      74% { transform: rotate(-20deg); }
+      90% { transform: rotate(18deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes tokPop {
+      0% { opacity: 0; transform: scale(0.4) translateY(10px); }
+      50% { opacity: 1; transform: scale(1.18) translateY(-6px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.75)); }
+      50% { transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 14px rgba(250, 204, 21, 1)); }
+    }
+
+    @keyframes shakeGentle {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    .animate-float { animation: floatSlow 3.4s ease-in-out infinite; }
+    .animate-pop { animation: popIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .animate-gavel { transform-origin: 85% 85%; animation: gavelStrike 0.85s ease-in-out forwards; }
+    .animate-tok { animation: tokPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .animate-twinkle { animation: twinkle 1.6s ease-in-out infinite; }
+    .animate-shake { animation: shakeGentle 0.42s ease-in-out; }
+
+    /* Konfeti */
+    .confetti-piece {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 120;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg) scale(0.75); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between">
+
+  <!-- DEKORASI LATAR RUANG SIDANG ANAK-ANAK YANG CERIA -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+    <!-- Tirai Biru Laut & Kuning Cerah di Sisi Atas -->
+    <div class="absolute top-0 left-0 w-full h-10 bg-gradient-to-r from-sky-600 via-sky-500 to-sky-600 opacity-35"></div>
+    <!-- Lingkaran Cahaya Lembut -->
+    <div class="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-yellow-200/45 blur-xl"></div>
+    <div class="absolute top-1/4 -right-16 w-72 h-72 rounded-full bg-white/30 blur-xl"></div>
+    <!-- Lantai Kayu Hangat Ruang Sidang -->
+    <div class="absolute bottom-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-t from-amber-300/75 via-emerald-200/60 to-transparent"></div>
+  </div>
+
+  <!-- TOMBOL KONTROL SUARA & MUSIK (POJOK KANAN ATAS) -->
+  <div class="fixed top-3 right-3 sm:top-4 sm:right-5 z-50 flex items-center gap-2">
+    <button id="btn-sound-toggle" onclick="toggleAudio()" aria-label="Hidupkan atau Matikan Suara"
+      class="clay-btn clay-btn-sky px-4 py-2.5 sm:px-5 sm:py-3 rounded-full flex items-center gap-2 text-base sm:text-lg font-bold shadow-lg">
+      <span id="sound-icon" class="text-xl sm:text-2xl">🔊</span>
+      <span id="sound-label" class="hidden sm:inline">Suara Hidup</span>
+    </button>
+  </div>
+
+  <!-- KONTENER UTAMA -->
+  <main class="relative z-10 w-full max-w-5xl mx-auto px-3 sm:px-6 py-3 sm:py-5 flex-grow flex flex-col justify-center">
+
+    <!-- ==================== 1. HALAMAN PEMBUKA ==================== -->
+    <section id="screen-intro" class="flex flex-col items-center text-center animate-pop py-1">
+      <div class="inline-flex items-center gap-2 bg-yellow-300 border-4 border-white px-5 py-1.5 rounded-full shadow-md mb-2">
+        <span class="text-xl">⚖️</span>
+        <span class="text-amber-950 font-extrabold text-sm sm:text-base tracking-wide uppercase">Bahasa Indonesia • Kelas 1 SD Fase A</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-[0_5px_0_#0369a1]">
+        HAKIM KALIMAT
+      </h1>
+      <p class="mt-1.5 text-xl sm:text-3xl font-extrabold text-amber-950 bg-yellow-300/95 px-6 py-2 rounded-full shadow border-3 border-white">
+        Jadilah Hakim Cilik yang Cerdas!
+      </p>
+
+      <!-- Ilustrasi Ruang Sidang Ceria: Hakim Cilik, Asisten & Dua Saksi -->
+      <div class="my-3 sm:my-5 w-full max-w-xl animate-float">
+        <div id="intro-courtroom-svg" class="w-full flex justify-center"></div>
+      </div>
+
+      <!-- Tombol Mulai Sidang -->
+      <button onclick="goToInstructions()"
+        class="clay-btn clay-btn-orange text-2xl sm:text-4xl font-extrabold px-10 sm:px-14 py-4 sm:py-5 rounded-full flex items-center gap-3 tracking-wide">
+        <span>🔨</span>
+        <span>MULAI SIDANG</span>
+      </button>
+    </section>
+
+    <!-- ==================== 2. HALAMAN PETUNJUK PERMAINAN ==================== -->
+    <section id="screen-instructions" class="hidden flex-col items-center animate-pop py-2">
+      <div class="clay-card w-full max-w-3xl p-5 sm:p-8">
+        <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-4">
+          <div id="guide-judge-svg" class="w-28 h-28 sm:w-36 sm:h-36 shrink-0 animate-float"></div>
+          <div class="text-center sm:text-left">
+            <span class="inline-block bg-sky-100 text-sky-900 font-extrabold px-4 py-1 rounded-full text-sm sm:text-base mb-1 border-2 border-sky-300">
+              ATURAN RUANG SIDANG
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-sky-900">
+              Halo, Hakim Cilik! ⚖️
+            </h2>
+            <p class="text-lg sm:text-xl font-bold text-slate-700 mt-1">
+              Hari ini ada beberapa kalimat yang harus diperiksa.
+            </p>
+          </div>
+        </div>
+
+        <!-- Langkah Petunjuk Sesuai Permintaan -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 my-4">
+          <div class="bg-sky-50 border-3 border-sky-200 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm">
+            <div class="w-11 h-11 rounded-2xl bg-sky-500 text-white font-extrabold text-2xl flex items-center justify-center shrink-0 shadow">1</div>
+            <p class="text-lg sm:text-xl font-bold text-sky-950">🔍 Amati gambar dengan teliti.</p>
+          </div>
+          <div class="bg-amber-50 border-3 border-amber-200 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-amber-950 font-extrabold text-2xl flex items-center justify-center shrink-0 shadow">2</div>
+            <p class="text-lg sm:text-xl font-bold text-amber-950">📖 Baca tiga pilihan kalimat.</p>
+          </div>
+          <div class="bg-emerald-50 border-3 border-emerald-200 rounded-2xl p-4 flex items-center gap-3.5 shadow-sm sm:col-span-2">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500 text-white font-extrabold text-2xl flex items-center justify-center shrink-0 shadow">3</div>
+            <p class="text-lg sm:text-xl font-bold text-emerald-950">✅ Pilih satu kalimat yang paling tepat dan paling jelas menggambarkan gambar.</p>
+          </div>
+        </div>
+
+        <div class="bg-yellow-100 border-3 border-yellow-300 rounded-2xl px-5 py-3 text-center my-3">
+          <p class="text-lg sm:text-2xl font-extrabold text-amber-900">
+            ✨ Ingat! Hakim harus teliti dan adil. ✨
+          </p>
+        </div>
+
+        <!-- Tombol Dengarkan & Mulai Menilai -->
+        <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="speakInstructions()"
+            class="clay-btn clay-btn-sky text-lg sm:text-xl font-bold px-6 py-3.5 rounded-full flex items-center gap-2">
+            <span>🔈</span>
+            <span>Dengarkan Petunjuk</span>
+          </button>
+          <button onclick="startTrials()"
+            class="clay-btn clay-btn-mint text-2xl sm:text-3xl font-extrabold px-10 py-4 rounded-full flex items-center gap-3">
+            <span>MULAI MENILAI</span>
+            <span>⚖️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. LAYAR LIMA SOAL SIDANG ==================== -->
+    <section id="screen-game" class="hidden flex-col gap-3 w-full animate-pop">
+
+      <!-- Bilah Atas: Progres Sidang 1-5, 5 Ikon Bintang & Skor -->
+      <header class="clay-card px-4 py-2.5 sm:px-6 sm:py-3 flex flex-wrap items-center justify-between gap-2 pr-16 sm:pr-44">
+        <div class="flex items-center gap-2">
+          <span class="bg-orange-500 text-white font-extrabold px-3.5 py-1.5 rounded-2xl text-base sm:text-lg shadow-sm">
+            Sidang <span id="trial-number">1</span> / 5
+          </span>
+          <div id="trial-dots" class="hidden md:flex items-center gap-1.5 ml-1"></div>
+        </div>
+
+        <!-- 5 Ikon Bintang Penghargaan -->
+        <div id="stars-bar" class="flex items-center gap-1 sm:gap-2 bg-sky-100/90 px-3 py-1 rounded-2xl border-2 border-sky-200"></div>
+
+        <!-- Total Nilai -->
+        <div class="bg-yellow-200 border-2 border-yellow-400 px-3.5 py-1 rounded-2xl text-amber-950 font-extrabold text-base sm:text-lg">
+          Nilai: <span id="score-display" class="text-orange-600 text-xl sm:text-2xl">0</span>
+        </div>
+      </header>
+
+      <!-- Panggung Ruang Sidang Utama -->
+      <div class="clay-card p-4 sm:p-6">
+        <!-- Judul Sidang -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-3">
+          <span class="bg-sky-100 text-sky-900 font-extrabold px-4 py-1 rounded-full text-base sm:text-xl border-2 border-sky-200" id="trial-title">
+            SIDANG 1 – GAMBAR BUKU
+          </span>
+        </div>
+
+        <!-- Grid Responsif: Kiri (Gambar Bukti + Hakim & Saksi), Kanan (3 Kartu Pilihan Kalimat) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center">
+
+          <!-- Kolom Kiri: Gambar Bukti Besar & Karakter Hakim Cilik -->
+          <div class="lg:col-span-6 flex flex-col items-center">
+            <!-- Bingkai Barang Bukti Sidang -->
+            <div class="w-full bg-gradient-to-b from-sky-100 via-white to-emerald-50 rounded-3xl border-4 border-sky-300 p-3 sm:p-4 shadow-inner relative">
+              <div class="absolute top-2.5 left-3 bg-yellow-300 text-amber-950 text-xs sm:text-sm font-extrabold px-3 py-0.5 rounded-full border-2 border-white shadow-sm">
+                🖼️ Gambar Bukti
+              </div>
+              <div id="evidence-svg" class="w-full h-48 sm:h-60 flex items-center justify-center animate-float"></div>
+            </div>
+
+            <!-- Meja Hakim & Reaksi Langsung -->
+            <div class="w-full mt-3 flex items-center gap-3 bg-amber-50 border-3 border-amber-200 rounded-3xl p-2.5 sm:p-3">
+              <div id="mini-judge-avatar" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0"></div>
+              <div class="flex-grow text-left">
+                <span class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-orange-600">Kata Hakim Cilik:</span>
+                <p id="judge-live-speech" class="text-base sm:text-xl font-extrabold text-slate-800 leading-snug">
+                  “Amati gambar di atas, lalu pilih kalimat yang paling tepat!”
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Kanan: 3 Pilihan Kalimat (A, B, C) -->
+          <div class="lg:col-span-6 flex flex-col gap-3 sm:gap-3.5">
+            <div class="text-center lg:text-left">
+              <p class="text-lg sm:text-xl font-extrabold text-sky-950">
+                Pilih satu kalimat yang paling jelas menggambarkan gambar:
+              </p>
+            </div>
+
+            <div id="choices-container" class="flex flex-col gap-3 sm:gap-3.5">
+              <!-- Kartu pilihan A, B, C dirender via JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. MODAL UMPAN BALIK & KETUKAN PALU HAKIM ==================== -->
+    <div id="feedback-modal" class="hidden fixed inset-0 z-50 bg-sky-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="clay-card w-full max-w-xl p-5 sm:p-7 text-center animate-pop relative overflow-hidden">
+
+        <!-- Animasi Palu Hakim & Tulisan "TOK! TOK! TOK!" -->
+        <div class="relative flex flex-col items-center justify-center mb-1">
+          <div id="tok-banner" class="hidden animate-tok bg-yellow-300 border-4 border-white text-amber-950 font-extrabold text-xl sm:text-2xl px-5 py-1 rounded-full shadow-md mb-1">
+            🔨 TOK! TOK! TOK!
+          </div>
+          <div id="modal-judge-svg" class="w-36 h-36 sm:w-44 sm:h-44 mx-auto"></div>
+        </div>
+
+        <!-- Lencana Poin (Muncul saat Benar) -->
+        <div id="modal-points-badge" class="hidden justify-center items-center gap-2 my-1">
+          <span class="text-3xl sm:text-4xl animate-twinkle">⭐</span>
+          <span id="modal-points-text" class="bg-emerald-400 text-white font-extrabold px-4 py-1 rounded-full text-lg sm:text-xl border-2 border-white shadow">
+            +20 Poin!
+          </span>
+        </div>
+
+        <!-- Pesan Utama Hakim -->
+        <h3 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-1">
+          Keputusan tepat! Kamu hakim yang teliti!
+        </h3>
+
+        <!-- Kotak Penjelasan Singkat (Alasan) -->
+        <div id="modal-reason-box" class="mt-3 mb-5 bg-sky-50 border-3 border-sky-200 rounded-2xl p-4 text-left">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl shrink-0">💡</span>
+            <div>
+              <p id="modal-chosen-sentence" class="text-xl sm:text-2xl font-extrabold text-sky-950 mb-1"></p>
+              <p id="modal-reason-text" class="text-base sm:text-lg font-bold text-slate-700 leading-snug"></p>
+            </div>
+            <button onclick="speakModalFeedback()" title="Dengarkan Penjelasan"
+              class="clay-btn clay-btn-sky p-2.5 rounded-full text-lg shrink-0 ml-auto">
+              🔊
+            </button>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi Modal -->
+        <div id="modal-actions" class="flex flex-wrap items-center justify-center gap-4"></div>
+      </div>
+    </div>
+
+    <!-- ==================== 5. PAPAN HASIL SIDANG & HALAMAN PENUTUP ==================== -->
+    <section id="screen-result" class="hidden flex-col items-center text-center animate-pop py-1">
+      <div class="clay-card w-full max-w-3xl p-5 sm:p-8 relative overflow-hidden">
+
+        <!-- 5 Ikon Bintang Penghargaan -->
+        <div id="final-stars-row" class="flex items-center justify-center gap-2 sm:gap-3 mb-2"></div>
+
+        <!-- Kategori Penghargaan -->
+        <div class="inline-block bg-yellow-300 border-3 border-white px-6 py-1.5 rounded-full shadow-md mb-2">
+          <span id="result-category" class="text-xl sm:text-3xl font-extrabold text-amber-950">
+            🏆 Hakim Super Cerdas!
+          </span>
+        </div>
+
+        <!-- Ilustrasi Karakter Hakim Memberikan Medali Emas -->
+        <div id="medal-ceremony-svg" class="w-full max-w-sm mx-auto my-2 animate-float"></div>
+
+        <!-- Ringkasan Skor & Jawaban Benar -->
+        <div class="grid grid-cols-2 gap-3 max-w-md mx-auto my-3">
+          <div class="bg-sky-100 border-3 border-sky-300 rounded-2xl p-3">
+            <div class="text-sm sm:text-base font-extrabold text-sky-800">TOTAL NILAI</div>
+            <div class="text-3xl sm:text-4xl font-extrabold text-orange-600"><span id="final-score">100</span> / 100</div>
+          </div>
+          <div class="bg-emerald-100 border-3 border-emerald-300 rounded-2xl p-3">
+            <div class="text-sm sm:text-base font-extrabold text-emerald-800">SIDANG TUNTAS</div>
+            <div class="text-3xl sm:text-4xl font-extrabold text-emerald-700"><span id="final-correct-count">5</span> / 5</div>
+          </div>
+        </div>
+
+        <!-- Pesan Halaman Penutup -->
+        <div class="bg-amber-50 border-3 border-amber-200 rounded-3xl p-4 sm:p-5 my-4 max-w-2xl mx-auto">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-orange-600 mb-1">
+            SELAMAT, HAKIM CILIK!
+          </h2>
+          <p class="text-lg sm:text-xl font-bold text-slate-700 leading-relaxed">
+            Kamu sudah belajar memilih kalimat yang paling tepat berdasarkan gambar.<br class="hidden sm:inline" />
+            Teruslah membaca, mengamati, dan berpikir cermat!
+          </p>
+        </div>
+
+        <!-- Tombol MAIN LAGI & SELESAI -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mt-4">
+          <button onclick="restartGame()"
+            class="clay-btn clay-btn-orange text-xl sm:text-2xl font-extrabold px-8 sm:px-10 py-4 rounded-full flex items-center gap-2.5">
+            <span>🔄</span>
+            <span>MAIN LAGI</span>
+          </button>
+          <button onclick="finishSession()"
+            class="clay-btn clay-btn-mint text-xl sm:text-2xl font-extrabold px-8 sm:px-10 py-4 rounded-full flex items-center gap-2.5">
+            <span>🌟</span>
+            <span>SELESAI</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. LAYAR APREASI SELESAI ==================== -->
+    <section id="screen-goodbye" class="hidden flex-col items-center text-center animate-pop py-4">
+      <div class="clay-card w-full max-w-2xl p-6 sm:p-10">
+        <div id="goodbye-svg" class="w-56 h-56 mx-auto mb-3 animate-float"></div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-sky-900 mb-3">
+          Sidang Ditutup! 🔨
+        </h2>
+        <p class="text-xl sm:text-2xl font-bold text-slate-700 leading-relaxed mb-6">
+          Terima kasih sudah menjadi Hakim Cilik yang teliti dan adil hari ini. Sampai jumpa di sidang berikutnya!
+        </p>
+        <button onclick="returnToHome()"
+          class="clay-btn clay-btn-yellow text-xl sm:text-2xl font-extrabold px-9 py-4 rounded-full inline-flex items-center gap-2.5">
+          <span>🏠</span>
+          <span>KEMBALI KE AWAL</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. DATA LIMA SOAL SIDANG (BAHASA INDONESIA KELAS 1 SD FASE A)
+    // =========================================================================
+    const TRIALS = [
+      {
+        id: 1,
+        title: "SIDANG 1 – GAMBAR BUKU",
+        evidenceKey: "book",
+        choices: [
+          { letter: "A", text: "Buku itu berwarna biru." },
+          { letter: "B", text: "Budi sedang membaca buku cerita." },
+          { letter: "C", text: "Buku ada di sekolah." }
+        ],
+        correctLetter: "B",
+        reason: "Kalimat B menggambarkan kegiatan yang terlihat pada gambar dengan lebih jelas."
+      },
+      {
+        id: 2,
+        title: "SIDANG 2 – GAMBAR KUCING",
+        evidenceKey: "cat",
+        choices: [
+          { letter: "A", text: "Kucing putih itu tidur di kursi." },
+          { letter: "B", text: "Kucing suka makan ikan." },
+          { letter: "C", text: "Kucing itu lucu sekali." }
+        ],
+        correctLetter: "A",
+        reason: "Kalimat A menjelaskan objek, warna, dan kegiatan sesuai gambar."
+      },
+      {
+        id: 3,
+        title: "SIDANG 3 – GAMBAR TAS",
+        evidenceKey: "bag",
+        choices: [
+          { letter: "A", text: "Tas itu untuk sekolah." },
+          { letter: "B", text: "Tas merah berada di atas meja." },
+          { letter: "C", text: "Tas memiliki banyak barang." }
+        ],
+        correctLetter: "B",
+        reason: "Kalimat B menjelaskan warna dan letak tas sesuai gambar."
+      },
+      {
+        id: 4,
+        title: "SIDANG 4 – GAMBAR BUNGA",
+        evidenceKey: "flower",
+        choices: [
+          { letter: "A", text: "Bunga matahari itu berwarna kuning." },
+          { letter: "B", text: "Bunga ada di mana-mana." },
+          { letter: "C", text: "Bunga itu bisa dibeli." }
+        ],
+        correctLetter: "A",
+        reason: "Kalimat A menjelaskan ciri bunga yang tampak pada gambar."
+      },
+      {
+        id: 5,
+        title: "SIDANG 5 – GAMBAR ANAK BERMAIN BOLA",
+        evidenceKey: "ball",
+        choices: [
+          { letter: "A", text: "Anak itu memakai sepatu." },
+          { letter: "B", text: "Anak itu sedang menendang bola." },
+          { letter: "C", text: "Bola berbentuk bulat." }
+        ],
+        correctLetter: "B",
+        reason: "Kalimat B menjelaskan kegiatan yang sedang dilakukan anak pada gambar."
+      }
+    ];
+
+    // =========================================================================
+    // 2. STATE PERMAINAN
+    // =========================================================================
+    let currentTrialIndex = 0;
+    let totalScore = 0;
+    let firstTryCorrectCount = 0;
+    let trialResults = [null, null, null, null, null]; // Menyimpan skor tiap sidang (20, 10, atau 0)
+    let wrongAttemptsInCurrentTrial = [];
+    let currentModalSpeech = "";
+    let soundEnabled = true;
+
+    // =========================================================================
+    // 3. SISTEM AUDIO WEB AUDIO API (MUSIK CERIA, PALU SIDANG "TOK! TOK! TOK!", TTS)
+    // =========================================================================
+    let audioCtx = null;
+    let bgmTimer = null;
+    let bgmIndex = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function startBackgroundMusic() {
+      initAudio();
+      if (bgmTimer) return;
+      // Melodi ceria lembut ruang sidang anak
+      const melody = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.00, 783.99];
+      bgmTimer = setInterval(() => {
+        if (!soundEnabled || !audioCtx || audioCtx.state !== "running") return;
+        const freq = melody[bgmIndex % melody.length];
+        bgmIndex++;
+
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.024, now + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.36);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.38);
+      }, 540);
+    }
+
+    function toggleAudio() {
+      initAudio();
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById("sound-icon");
+      const label = document.getElementById("sound-label");
+      if (soundEnabled) {
+        icon.textContent = "🔊";
+        label.textContent = "Suara Hidup";
+        playPop(640);
+        startBackgroundMusic();
+      } else {
+        icon.textContent = "🔇";
+        label.textContent = "Suara Mati";
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      }
+    }
+
+    function playPop(freq = 560) {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.3, now + 0.08);
+      gain.gain.setValueAtTime(0.14, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    }
+
+    // Efek Suara Ketukan Palu Hakim "Tok! Tok! Tok!" + Lonceng Kemenangan
+    function playGavelKnockAndCheer() {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+
+      // 3 ketukan kayu palu sidang (0.0s, 0.22s, 0.44s)
+      [0, 0.22, 0.44].forEach((offset) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(240, now + offset);
+        osc.frequency.exponentialRampToValueAtTime(95, now + offset + 0.09);
+
+        gain.gain.setValueAtTime(0.38, now + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.11);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + offset);
+        osc.stop(now + offset + 0.12);
+      });
+
+      // Fanfare bintang ceria setelah palu diketuk
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach((freq, i) => {
+        const t = now + 0.62 + i * 0.1;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.exponentialRampToValueAtTime(0.16, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.35);
+      });
+    }
+
+    // Efek Suara Lembut saat Hakim Berpikir
+    function playThinkSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      [440, 392].forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + idx * 0.15);
+        gain.gain.setValueAtTime(0.12, now + idx * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.15 + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + idx * 0.15);
+        osc.stop(now + idx * 0.15 + 0.2);
+      });
+    }
+
+    function speakText(text) {
+      if (!soundEnabled || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "id-ID";
+      utter.rate = 0.93;
+      utter.pitch = 1.12;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakInstructions() {
+      playPop(620);
+      speakText(
+        "Halo, Hakim Cilik! Hari ini ada beberapa kalimat yang harus diperiksa. Amati gambar dengan teliti. Baca tiga pilihan kalimat. Pilih satu kalimat yang paling tepat dan paling jelas menggambarkan gambar. Ingat! Hakim harus teliti dan adil."
+      );
+    }
+
+    function speakModalFeedback() {
+      playPop(650);
+      if (currentModalSpeech) speakText(currentModalSpeech);
+    }
+
+    // =========================================================================
+    // 4. ILUSTRASI SVG GAYA 3D CLAY RUANG SIDANG, KARAKTER & OBJEK SOAL
+    // =========================================================================
+    function getClayDefs() {
+      return `
+        <defs>
+          <radialGradient id="claySkin" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffedd5"/>
+            <stop offset="65%" stop-color="#fed7aa"/>
+            <stop offset="100%" stop-color="#fdba74"/>
+          </radialGradient>
+          <radialGradient id="clayRobe" cx="30%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="55%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </radialGradient>
+          <radialGradient id="clayGold" cx="30%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="55%" stop-color="#facc15"/>
+            <stop offset="100%" stop-color="#ca8a04"/>
+          </radialGradient>
+          <radialGradient id="claySkyShirt" cx="30%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#7dd3fc"/>
+            <stop offset="65%" stop-color="#0ea5e9"/>
+            <stop offset="100%" stop-color="#0369a1"/>
+          </radialGradient>
+          <radialGradient id="clayMintShirt" cx="30%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#a7f3d0"/>
+            <stop offset="65%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#059669"/>
+          </radialGradient>
+          <radialGradient id="clayOrangeShirt" cx="30%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#fed7aa"/>
+            <stop offset="65%" stop-color="#fb923c"/>
+            <stop offset="100%" stop-color="#c2410c"/>
+          </radialGradient>
+          <filter id="clayDrop" x="-15%" y="-15%" width="130%" height="135%">
+            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+      `;
+    }
+
+    // Ilustrasi Ruang Sidang Pembuka: Hakim Cilik (Tengah), Asisten Hakim (Kiri), 2 Anak Saksi (Kanan)
+    function renderCourtroomIntroSVG() {
+      return `
+        <svg viewBox="0 0 540 270" class="w-full h-auto max-h-64" filter="url(#clayDrop)">
+          ${getClayDefs()}
+          <!-- Latar Lengkungan Ruang Sidang -->
+          <rect x="45" y="18" width="450" height="225" rx="44" fill="#ffffff" opacity="0.72"/>
+          <rect x="65" y="34" width="410" height="190" rx="34" fill="#e0f2fe"/>
+
+          <!-- ASISTEN HAKIM (KIRI) -->
+          <g transform="translate(82, 68)">
+            <rect x="18" y="82" width="64" height="62" rx="28" fill="url(#clayMintShirt)"/>
+            <circle cx="50" cy="48" r="34" fill="url(#claySkin)"/>
+            <path d="M18,44 C20,16 80,16 82,44 C70,30 30,30 18,44 Z" fill="#7c2d12"/>
+            <!-- Kacamata Pintar Asisten -->
+            <circle cx="38" cy="48" r="9" fill="#ffffff" stroke="#0284c7" stroke-width="3"/>
+            <circle cx="62" cy="48" r="9" fill="#ffffff" stroke="#0284c7" stroke-width="3"/>
+            <line x1="47" y1="48" x2="53" y2="48" stroke="#0284c7" stroke-width="3"/>
+            <circle cx="38" cy="48" r="3.5" fill="#1e293b"/>
+            <circle cx="62" cy="48" r="3.5" fill="#1e293b"/>
+            <path d="M40,62 Q50,72 60,62" stroke="#9a3412" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <!-- Buku Catatan Asisten -->
+            <rect x="24" y="96" width="52" height="36" rx="8" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+          </g>
+
+          <!-- DUA ANAK SAKSI (KANAN) -->
+          <!-- Saksi 1 -->
+          <g transform="translate(348, 72)">
+            <circle cx="14" cy="36" r="13" fill="#9a3412"/>
+            <circle cx="76" cy="36" r="13" fill="#9a3412"/>
+            <rect x="16" y="78" width="58" height="58" rx="26" fill="url(#clayOrangeShirt)"/>
+            <circle cx="45" cy="44" r="32" fill="url(#claySkin)"/>
+            <path d="M15,40 C18,14 72,14 75,40 C60,28 30,28 15,40 Z" fill="#9a3412"/>
+            <circle cx="34" cy="44" r="4.5" fill="#1e293b"/>
+            <circle cx="56" cy="44" r="4.5" fill="#1e293b"/>
+            <path d="M36,56 Q45,65 54,56" stroke="#9a3412" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Saksi 2 -->
+          <g transform="translate(414, 82)">
+            <rect x="14" y="72" width="52" height="52" rx="24" fill="url(#claySkyShirt)"/>
+            <circle cx="40" cy="40" r="29" fill="url(#claySkin)"/>
+            <path d="M12,36 C15,12 65,12 68,36 C56,24 24,24 12,36 Z" fill="#1e293b"/>
+            <circle cx="30" cy="40" r="4" fill="#1e293b"/>
+            <circle cx="50" cy="40" r="4" fill="#1e293b"/>
+            <path d="M32,51 Q40,59 48,51" stroke="#9a3412" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- HAKIM CILIK UTAMA (TENGAH) -->
+          <g transform="translate(192, 24)">
+            <!-- Jubah Hakim Hitam & Emas -->
+            <rect x="24" y="102" width="108" height="92" rx="40" fill="url(#clayRobe)"/>
+            <!-- Selempang Emas & Dasi Putih Hakim -->
+            <path d="M54,104 L78,144 L102,104 Z" fill="#ffffff"/>
+            <rect x="70" y="106" width="16" height="28" rx="6" fill="url(#clayGold)"/>
+            <!-- Kepala -->
+            <circle cx="78" cy="64" r="44" fill="url(#claySkin)"/>
+            <!-- Rambut Hakim Cilik -->
+            <path d="M34,58 C36,18 120,18 122,58 C105,40 51,40 34,58 Z" fill="#334155"/>
+            <!-- Topi / Mahkota Bintang Hakim Cilik -->
+            <rect x="46" y="16" width="64" height="16" rx="8" fill="url(#clayGold)"/>
+            <text x="68" y="29" font-size="16">⭐</text>
+            <!-- Mata & Pipi -->
+            <circle cx="62" cy="64" r="6" fill="#1e293b"/>
+            <circle cx="60" cy="62" r="2" fill="#ffffff"/>
+            <circle cx="94" cy="64" r="6" fill="#1e293b"/>
+            <circle cx="92" cy="62" r="2" fill="#ffffff"/>
+            <ellipse cx="52" cy="76" rx="7" ry="4.5" fill="#fda4af" opacity="0.75"/>
+            <ellipse cx="104" cy="76" rx="7" ry="4.5" fill="#fda4af" opacity="0.75"/>
+            <path d="M64,79 Q78,94 92,79" stroke="#9a3412" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+            <!-- Tangan Memegang Palu Sidang Kayu -->
+            <g transform="translate(114, 96) rotate(-18)">
+              <rect x="8" y="24" width="10" height="44" rx="5" fill="#b45309"/>
+              <rect x="-4" y="8" width="34" height="20" rx="8" fill="#d97706"/>
+              <rect x="-6" y="11" width="6" height="14" rx="3" fill="#facc15"/>
+              <rect x="26" y="11" width="6" height="14" rx="3" fill="#facc15"/>
+              <circle cx="13" cy="54" r="12" fill="url(#claySkin)"/>
+            </g>
+          </g>
+
+          <!-- Meja Sidang Kayu 3D Clay di Bagian Bawah -->
+          <rect x="130" y="196" width="280" height="52" rx="22" fill="#fb923c" stroke="#fed7aa" stroke-width="4"/>
+          <rect x="150" y="206" width="240" height="32" rx="14" fill="#ea580c"/>
+          <circle cx="270" cy="222" r="13" fill="url(#clayGold)"/>
+          <text x="261" y="228" font-size="16">⚖️</text>
+        </svg>
+      `;
+    }
+
+    // Karakter Hakim Cilik dengan berbagai ekspresi: "happy" (palu ketuk), "think" (berpikir), "medal" (memberi medali)
+    function renderJudgeCharacterSVG(mode = "happy", animateGavel = false) {
+      return `
+        <svg viewBox="0 0 220 220" class="w-full h-full" filter="url(#clayDrop)">
+          ${getClayDefs()}
+          <circle cx="110" cy="112" r="92" fill="${mode === 'think' ? '#fef3c7' : '#e0f2fe'}"/>
+
+          <!-- Jubah Hakim -->
+          <rect x="54" y="130" width="112" height="76" rx="36" fill="url(#clayRobe)"/>
+          <path d="M84,132 L110,164 L136,132 Z" fill="#ffffff"/>
+          <rect x="102" y="134" width="16" height="24" rx="6" fill="url(#clayGold)"/>
+
+          <!-- Kepala -->
+          <circle cx="110" cy="86" r="46" fill="url(#claySkin)"/>
+          <path d="M64,80 C66,38 154,38 156,80 C138,62 82,62 64,80 Z" fill="#334155"/>
+          <rect x="78" y="36" width="64" height="15" rx="7.5" fill="url(#clayGold)"/>
+
+          <!-- Mata & Ekspresi -->
+          ${mode === "think" ? `
+            <circle cx="94" cy="84" r="6" fill="#1e293b"/>
+            <circle cx="126" cy="82" r="6" fill="#1e293b"/>
+            <path d="M86,73 L102,75" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M118,71 L134,68" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <ellipse cx="112" cy="105" rx="8" ry="6" fill="#9a3412"/>
+            <!-- Tangan di Dagu (Berpikir) -->
+            <circle cx="94" cy="122" r="14" fill="url(#claySkin)"/>
+          ` : `
+            <path d="M86,84 Q94,74 102,84" stroke="#1e293b" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M118,84 Q126,74 134,84" stroke="#1e293b" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="82" cy="96" rx="8" ry="5" fill="#fda4af" opacity="0.75"/>
+            <ellipse cx="138" cy="96" rx="8" ry="5" fill="#fda4af" opacity="0.75"/>
+            <path d="M94,100 Q110,118 126,100" stroke="#9a3412" stroke-width="5" fill="none" stroke-linecap="round"/>
+          `}
+
+          <!-- Palu Sidang di Tangan Kanan -->
+          <g class="${animateGavel ? 'animate-gavel' : ''}" transform="translate(152, 108)">
+            <rect x="8" y="24" width="10" height="44" rx="5" fill="#b45309"/>
+            <rect x="-5" y="6" width="36" height="20" rx="8" fill="#d97706"/>
+            <rect x="-7" y="9" width="6" height="14" rx="3" fill="#facc15"/>
+            <rect x="27" y="9" width="6" height="14" rx="3" fill="#facc15"/>
+            <circle cx="13" cy="54" r="13" fill="url(#claySkin)"/>
+          </g>
+
+          ${mode === "medal" ? `
+            <!-- Medali Emas Penghargaan -->
+            <g transform="translate(36, 122)">
+              <path d="M10,0 L24,26 L38,0" stroke="#ef4444" stroke-width="7" fill="none"/>
+              <circle cx="24" cy="36" r="20" fill="url(#clayGold)" stroke="#ffffff" stroke-width="3"/>
+              <text x="13" y="43" font-size="20">⭐</text>
+            </g>
+          ` : ``}
+        </svg>
+      `;
+    }
+
+    // Ilustrasi 5 Gambar Bukti Sidang (Sesuai Tepat dengan Kunci Jawaban!)
+    function renderEvidenceSVG(key) {
+      switch (key) {
+        // SIDANG 1: Budi sedang membaca buku cerita terbuka dengan gambar menarik
+        case "book":
+          return `
+            <svg viewBox="0 0 380 230" class="w-full h-full" filter="url(#clayDrop)">
+              ${getClayDefs()}
+              <!-- Meja Baca -->
+              <rect x="40" y="182" width="300" height="28" rx="14" fill="#fdba74"/>
+              <!-- Karakter Budi Membaca -->
+              <g transform="translate(124, 14)">
+                <rect x="26" y="88" width="80" height="68" rx="32" fill="url(#claySkyShirt)"/>
+                <circle cx="66" cy="52" r="38" fill="url(#claySkin)"/>
+                <path d="M28,46 C30,14 102,14 104,46 C90,32 42,32 28,46 Z" fill="#1e293b"/>
+                <!-- Mata Melihat ke Buku -->
+                <circle cx="53" cy="56" r="5" fill="#1e293b"/>
+                <circle cx="79" cy="56" r="5" fill="#1e293b"/>
+                <path d="M55,68 Q66,78 77,68" stroke="#9a3412" stroke-width="4" fill="none" stroke-linecap="round"/>
+              </g>
+              <!-- Buku Cerita Terbuka dengan Gambar Menarik -->
+              <g transform="translate(96, 114)">
+                <rect x="0" y="8" width="188" height="74" rx="14" fill="#f97316"/>
+                <path d="M10,12 Q52,4 94,16 L94,76 Q52,64 10,72 Z" fill="#ffffff"/>
+                <path d="M178,12 Q136,4 94,16 L94,76 Q136,64 178,72 Z" fill="#f8fafc"/>
+                <!-- Gambar Pelangi & Bintang di Dalam Buku -->
+                <path d="M24,48 A24,24 0 0,1 74,48" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M30,48 A18,18 0 0,1 68,48" stroke="#facc15" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <circle cx="136" cy="36" r="13" fill="#fde047"/>
+                <rect x="112" y="54" width="48" height="6" rx="3" fill="#93c5fd"/>
+              </g>
+            </svg>
+          `;
+
+        // SIDANG 2: Seekor kucing putih lucu sedang tidur di atas kursi
+        case "cat":
+          return `
+            <svg viewBox="0 0 380 230" class="w-full h-full" filter="url(#clayDrop)">
+              ${getClayDefs()}
+              <!-- Kursi Kayu/Sofa Nyaman -->
+              <rect x="88" y="34" width="204" height="106" rx="28" fill="#fb923c"/>
+              <rect x="102" y="46" width="176" height="84" rx="20" fill="#fed7aa"/>
+              <!-- Dudukan Kursi -->
+              <rect x="74" y="122" width="232" height="44" rx="20" fill="#f97316"/>
+              <!-- Kaki Kursi -->
+              <rect x="96" y="162" width="20" height="42" rx="10" fill="#9a3412"/>
+              <rect x="264" y="162" width="20" height="42" rx="10" fill="#9a3412"/>
+
+              <!-- Kucing Putih Lucu Tidur Pulas di Atas Kursi -->
+              <g transform="translate(120, 74)">
+                <!-- Ekor Melingkar -->
+                <path d="M112,48 Q144,44 138,24" stroke="#f1f5f9" stroke-width="14" stroke-linecap="round" fill="none"/>
+                <!-- Badan Kucing Putih -->
+                <ellipse cx="76" cy="42" rx="48" ry="26" fill="#ffffff"/>
+                <!-- Kepala Kucing Putih -->
+                <circle cx="36" cy="34" r="28" fill="#ffffff"/>
+                <!-- Telinga -->
+                <polygon points="14,18 18,-4 34,12" fill="#ffffff"/>
+                <polygon points="18,14 20,2 30,12" fill="#fda4af"/>
+                <polygon points="58,18 54,-4 38,12" fill="#ffffff"/>
+                <polygon points="54,14 52,2 42,12" fill="#fda4af"/>
+                <!-- Mata Terpejam Tidur -->
+                <path d="M21,34 Q27,40 33,34" stroke="#475569" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <path d="M41,34 Q47,40 53,34" stroke="#475569" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <!-- Hidung Pink & Pipi -->
+                <circle cx="37" cy="41" r="3.5" fill="#fb7185"/>
+                <ellipse cx="20" cy="42" rx="5" ry="3" fill="#fecdd3"/>
+                <ellipse cx="54" cy="42" rx="5" ry="3" fill="#fecdd3"/>
+                <!-- Simbol Tidur Zzz -->
+                <text x="68" y="8" font-size="18" font-weight="bold" fill="#0284c7">z</text>
+                <text x="82" y="-4" font-size="22" font-weight="bold" fill="#0284c7">Z</text>
+              </g>
+            </svg>
+          `;
+
+        // SIDANG 3: Sebuah tas sekolah merah diletakkan di atas meja
+        case "bag":
+          return `
+            <svg viewBox="0 0 380 230" class="w-full h-full" filter="url(#clayDrop)">
+              ${getClayDefs()}
+              <!-- Meja Belajar -->
+              <rect x="46" y="152" width="288" height="24" rx="12" fill="#d97706"/>
+              <rect x="74" y="174" width="20" height="44" rx="10" fill="#92400e"/>
+              <rect x="286" y="174" width="20" height="44" rx="10" fill="#92400e"/>
+
+              <!-- Tas Sekolah Merah di Atas Meja -->
+              <g transform="translate(132, 24)">
+                <!-- Tali Tas -->
+                <path d="M18,36 C-8,44 -8,108 16,122" stroke="#b91c1c" stroke-width="11" fill="none" stroke-linecap="round"/>
+                <path d="M98,36 C124,44 124,108 100,122" stroke="#b91c1c" stroke-width="11" fill="none" stroke-linecap="round"/>
+                <!-- Pegangan Atas -->
+                <path d="M40,24 Q58,2 76,24" stroke="#991b1b" stroke-width="10" fill="none" stroke-linecap="round"/>
+                <!-- Badan Tas Merah -->
+                <rect x="12" y="24" width="92" height="106" rx="30" fill="#ef4444"/>
+                <!-- Tutup Tas -->
+                <path d="M12,56 Q58,78 104,56 L104,48 C104,30 86,24 58,24 C30,24 12,30 12,48 Z" fill="#dc2626"/>
+                <!-- Saku Depan & Gesper Kuning -->
+                <rect x="26" y="76" width="64" height="44" rx="16" fill="#dc2626"/>
+                <rect x="51" y="56" width="14" height="18" rx="5" fill="#facc15"/>
+                <text x="46" y="106" font-size="20">⭐</text>
+              </g>
+            </svg>
+          `;
+
+        // SIDANG 4: Bunga matahari kuning sedang mekar di taman
+        case "flower":
+          return `
+            <svg viewBox="0 0 380 230" class="w-full h-full" filter="url(#clayDrop)">
+              ${getClayDefs()}
+              <!-- Taman Rumput Hijau -->
+              <ellipse cx="190" cy="198" rx="154" ry="22" fill="#34d399"/>
+              <ellipse cx="190" cy="194" rx="126" ry="15" fill="#6ee7b7"/>
+              <!-- Bunga Matahari Kuning Mekar di Taman -->
+              <g transform="translate(190, 96)">
+                <!-- Batang & Daun -->
+                <rect x="-8" y="20" width="16" height="86" rx="8" fill="#16a34a"/>
+                <ellipse cx="-28" cy="64" rx="22" ry="12" transform="rotate(-25 -28 64)" fill="#22c55e"/>
+                <ellipse cx="28" cy="54" rx="22" ry="12" transform="rotate(25 28 54)" fill="#22c55e"/>
+                <!-- Kelopak Kuning Cerah -->
+                <circle cx="0" cy="-38" r="18" fill="#facc15"/>
+                <circle cx="0" cy="38" r="18" fill="#facc15"/>
+                <circle cx="-38" cy="0" r="18" fill="#facc15"/>
+                <circle cx="38" cy="0" r="18" fill="#facc15"/>
+                <circle cx="-27" cy="-27" r="18" fill="#fde047"/>
+                <circle cx="27" cy="-27" r="18" fill="#fde047"/>
+                <circle cx="-27" cy="27" r="18" fill="#fde047"/>
+                <circle cx="27" cy="27" r="18" fill="#fde047"/>
+                <!-- Tengah Bunga -->
+                <circle cx="0" cy="0" r="26" fill="#78350f"/>
+                <circle cx="-8" cy="-5" r="3" fill="#fef08a"/>
+                <circle cx="8" cy="-5" r="3" fill="#fef08a"/>
+                <path d="M-8,6 Q0,14 8,6" stroke="#fef08a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              </g>
+              <!-- Kupu-kupu Kecil di Taman -->
+              <text x="275" y="64" font-size="28">🦋</text>
+            </svg>
+          `;
+
+        // SIDANG 5: Seorang anak laki-laki sedang menendang bola di lapangan
+        case "ball":
+          return `
+            <svg viewBox="0 0 380 230" class="w-full h-full" filter="url(#clayDrop)">
+              ${getClayDefs()}
+              <!-- Lapangan Rumput -->
+              <ellipse cx="190" cy="196" rx="156" ry="22" fill="#34d399"/>
+              <!-- Anak Laki-laki Menendang Bola -->
+              <g transform="translate(94, 22)">
+                <rect x="34" y="88" width="56" height="56" rx="25" fill="url(#clayOrangeShirt)"/>
+                <!-- Kaki Tumpuan -->
+                <rect x="42" y="138" width="16" height="36" rx="8" fill="#1e3a8a"/>
+                <ellipse cx="50" cy="174" rx="14" ry="7" fill="#0284c7"/>
+                <!-- Kaki Menendang -->
+                <path d="M76,138 L108,154" stroke="#1e3a8a" stroke-width="16" stroke-linecap="round"/>
+                <ellipse cx="114" cy="156" rx="14" ry="8" fill="#0284c7"/>
+                <!-- Tangan -->
+                <path d="M36,98 L16,118" stroke="url(#claySkin)" stroke-width="13" stroke-linecap="round"/>
+                <path d="M88,98 L110,82" stroke="url(#claySkin)" stroke-width="13" stroke-linecap="round"/>
+                <!-- Kepala -->
+                <circle cx="62" cy="54" r="34" fill="url(#claySkin)"/>
+                <path d="M28,48 C30,18 94,18 96,48 C82,34 40,34 28,48 Z" fill="#1e293b"/>
+                <circle cx="51" cy="54" r="4.5" fill="#1e293b"/>
+                <circle cx="73" cy="54" r="4.5" fill="#1e293b"/>
+                <path d="M52,66 Q62,76 72,66" stroke="#9a3412" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              </g>
+              <!-- Bola Sepak -->
+              <g transform="translate(250, 154)">
+                <circle cx="0" cy="0" r="31" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+                <polygon points="0,-13 12,-4 8,10 -8,10 -12,-4" fill="#1e293b"/>
+                <polygon points="0,-31 9,-22 -9,-22" fill="#1e293b"/>
+                <polygon points="29,-8 20,-2 23,10 30,4" fill="#1e293b"/>
+                <polygon points="-29,-8 -20,-2 -23,10 -30,4" fill="#1e293b"/>
+                <path d="M-48,-8 L-36,-4" stroke="#f97316" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M-52,6 L-38,6" stroke="#f97316" stroke-width="4.5" stroke-linecap="round"/>
+              </g>
+            </svg>
+          `;
+      }
+    }
+
+    // =========================================================================
+    // 5. NAVIGASI LAYAR & LOGIKA PERMAINAN
+    // =========================================================================
+    function showScreen(id) {
+      const allScreens = [
+        "screen-intro",
+        "screen-instructions",
+        "screen-game",
+        "screen-result",
+        "screen-goodbye"
+      ];
+      allScreens.forEach((screenId) => {
+        const el = document.getElementById(screenId);
+        if (screenId === id) {
+          el.classList.remove("hidden");
+          el.classList.add("flex");
+        } else {
+          el.classList.add("hidden");
+          el.classList.remove("flex");
+        }
+      });
+    }
+
+    function goToInstructions() {
+      playPop(600);
+      startBackgroundMusic();
+      showScreen("screen-instructions");
+    }
+
+    function startTrials() {
+      playPop(640);
+      currentTrialIndex = 0;
+      totalScore = 0;
+      firstTryCorrectCount = 0;
+      trialResults = [null, null, null, null, null];
+      loadTrial(0);
+      showScreen("screen-game");
+    }
+
+    function restartGame() {
+      startTrials();
+    }
+
+    function finishSession() {
+      playPop(620);
+      showScreen("screen-goodbye");
+      speakText("Sidang ditutup! Terima kasih sudah menjadi Hakim Cilik yang teliti dan adil hari ini.");
+    }
+
+    function returnToHome() {
+      playPop(580);
+      showScreen("screen-intro");
+    }
+
+    // =========================================================================
+    // 6. MEMUAT SOAL SIDANG & PILIHAN JAWABAN
+    // =========================================================================
+    function loadTrial(index) {
+      const trial = TRIALS[index];
+      wrongAttemptsInCurrentTrial = [];
+
+      document.getElementById("trial-number").textContent = trial.id;
+      document.getElementById("trial-title").textContent = trial.title;
+      document.getElementById("evidence-svg").innerHTML = renderEvidenceSVG(trial.evidenceKey);
+      document.getElementById("mini-judge-avatar").innerHTML = renderJudgeCharacterSVG("happy", false);
+      document.getElementById("judge-live-speech").textContent =
+        "“Amati gambar di atas, lalu pilih kalimat yang paling tepat!”";
+
+      renderTopStatusBar();
+      renderChoices(trial);
+    }
+
+    function renderTopStatusBar() {
+      document.getElementById("score-display").textContent = totalScore;
+
+      // Indikator titik Sidang 1 - 5
+      const dotsEl = document.getElementById("trial-dots");
+      dotsEl.innerHTML = TRIALS.map((t, idx) => {
+        const done = trialResults[idx] !== null;
+        const active = idx === currentTrialIndex;
+        let cls = "w-7 h-7 rounded-full font-extrabold text-sm flex items-center justify-center border-2 transition-all ";
+        if (done) {
+          cls += "bg-emerald-400 border-emerald-600 text-white";
+        } else if (active) {
+          cls += "bg-yellow-300 border-orange-500 text-amber-950 scale-110 shadow";
+        } else {
+          cls += "bg-slate-100 border-slate-300 text-slate-500";
+        }
+        return `<div class="${cls}">${t.id}</div>`;
+      }).join("");
+
+      // 5 Ikon Bintang Penghargaan di bilah atas
+      const starsBar = document.getElementById("stars-bar");
+      starsBar.innerHTML = trialResults
+        .map((pts) => {
+          const earned = pts !== null && pts > 0;
+          return `
+            <svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300 ${earned ? 'scale-110' : 'opacity-40'}">
+              <polygon points="18,3 22.5,12.5 33,14 25.5,21.5 27.2,32 18,27 8.8,32 10.5,21.5 3,14 13.5,12.5"
+                fill="${earned ? '#facc15' : '#cbd5e1'}"
+                stroke="${earned ? '#ea580c' : '#94a3b8'}"
+                stroke-width="2.5"
+                stroke-linejoin="round"/>
+            </svg>
+          `;
+        })
+        .join("");
+    }
+
+    function renderChoices(trial) {
+      const container = document.getElementById("choices-container");
+      container.innerHTML = "";
+
+      const cardThemes = {
+        A: { cardCls: "choice-card-a", badgeBg: "bg-sky-500 text-white" },
+        B: { cardCls: "choice-card-b", badgeBg: "bg-amber-400 text-amber-950" },
+        C: { cardCls: "choice-card-c", badgeBg: "bg-emerald-500 text-white" }
+      };
+
+      trial.choices.forEach((choice) => {
+        const theme = cardThemes[choice.letter];
+        const isWrong = wrongAttemptsInCurrentTrial.includes(choice.letter);
+
+        const row = document.createElement("div");
+        row.className = "flex items-stretch gap-2";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.disabled = isWrong;
+        btn.id = `choice-btn-${choice.letter}`;
+        btn.className = `choice-card ${theme.cardCls} ${isWrong ? "wrong-picked" : ""} flex-grow px-4 sm:px-5 py-3.5 sm:py-4 flex items-center gap-3.5 sm:gap-4`;
+
+        btn.innerHTML = `
+          <span class="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl ${theme.badgeBg} font-extrabold text-2xl sm:text-3xl flex items-center justify-center shrink-0 shadow">
+            ${choice.letter}
+          </span>
+          <span class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug">
+            ${choice.text}
+          </span>
+        `;
+
+        btn.addEventListener("click", () => handleChoiceSelection(choice.letter));
+
+        // Tombol Speaker kecil untuk membacakan pilihan kalimat bagi siswa kelas 1
+        const speakBtn = document.createElement("button");
+        speakBtn.type = "button";
+        speakBtn.title = `Dengarkan pilihan ${choice.letter}`;
+        speakBtn.className = "clay-btn clay-btn-sky px-3.5 sm:px-4 rounded-2xl text-xl sm:text-2xl flex items-center justify-center shrink-0";
+        speakBtn.textContent = "🔊";
+        speakBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          playPop(620);
+          speakText(choice.text);
+        });
+
+        row.appendChild(btn);
+        row.appendChild(speakBtn);
+        container.appendChild(row);
+      });
+    }
+
+    // =========================================================================
+    // 7. PENILAIAN OTOMATIS & UMPAN BALIK INTERAKTIF
+    // =========================================================================
+    function handleChoiceSelection(selectedLetter) {
+      const trial = TRIALS[currentTrialIndex];
+      const isCorrect = selectedLetter === trial.correctLetter;
+
+      const modal = document.getElementById("feedback-modal");
+      const tokBanner = document.getElementById("tok-banner");
+      const modalJudge = document.getElementById("modal-judge-svg");
+      const pointsBadge = document.getElementById("modal-points-badge");
+      const pointsText = document.getElementById("modal-points-text");
+      const modalTitle = document.getElementById("modal-title");
+      const reasonBox = document.getElementById("modal-reason-box");
+      const chosenSentenceEl = document.getElementById("modal-chosen-sentence");
+      const reasonTextEl = document.getElementById("modal-reason-text");
+      const actionsEl = document.getElementById("modal-actions");
+
+      if (isCorrect) {
+        // Tandai kartu benar
+        const btn = document.getElementById(`choice-btn-${selectedLetter}`);
+        if (btn) btn.classList.add("correct-picked");
+
+        // Hitung poin berdasarkan percobaan (Percobaan 1 = 20 poin, Percobaan 2 = 10 poin, Percobaan 3 = 0 poin)
+        let earnedPoints = 20;
+        if (wrongAttemptsInCurrentTrial.length === 1) earnedPoints = 10;
+        else if (wrongAttemptsInCurrentTrial.length >= 2) earnedPoints = 0;
+
+        if (trialResults[currentTrialIndex] === null) {
+          trialResults[currentTrialIndex] = earnedPoints;
+          totalScore += earnedPoints;
+          if (wrongAttemptsInCurrentTrial.length === 0) {
+            firstTryCorrectCount++;
+          }
+          renderTopStatusBar();
+        }
+
+        // Efek suara palu "Tok! Tok! Tok!" & konfeti
+        playGavelKnockAndCheer();
+        launchConfetti(45);
+
+        // Tampilkan modal keputusan tepat
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        tokBanner.classList.remove("hidden");
+        modalJudge.innerHTML = renderJudgeCharacterSVG("happy", true);
+
+        pointsBadge.classList.remove("hidden");
+        pointsBadge.classList.add("flex");
+        pointsText.textContent = earnedPoints > 0 ? `+${earnedPoints} Poin!` : "Keputusan Tepat!";
+
+        modalTitle.textContent = "Keputusan tepat! Kamu hakim yang teliti!";
+        modalTitle.className = "text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-1";
+
+        const correctObj = trial.choices.find((c) => c.letter === trial.correctLetter);
+        reasonBox.classList.remove("hidden");
+        chosenSentenceEl.textContent = `“${correctObj.text}”`;
+        reasonTextEl.textContent = trial.reason;
+
+        const isLast = currentTrialIndex === TRIALS.length - 1;
+        actionsEl.innerHTML = `
+          <button onclick="proceedNextTrial()"
+            class="clay-btn clay-btn-mint text-xl sm:text-2xl font-extrabold px-8 sm:px-10 py-4 rounded-full flex items-center gap-3">
+            <span>${isLast ? "🏆 LIHAT HASIL SIDANG" : "SIDANG BERIKUTNYA"}</span>
+            <span>➡️</span>
+          </button>
+        `;
+
+        currentModalSpeech = `Keputusan tepat! Kamu hakim yang teliti! ${correctObj.text}. ${trial.reason}`;
+        setTimeout(() => speakText(currentModalSpeech), 650);
+      } else {
+        // Jawaban belum tepat: jangan langsung beri tahu kunci jawaban, beri kesempatan mencoba lagi!
+        if (!wrongAttemptsInCurrentTrial.includes(selectedLetter)) {
+          wrongAttemptsInCurrentTrial.push(selectedLetter);
+        }
+
+        playThinkSound();
+
+        // Ubah ekspresi hakim di layar utama & modal berpikir
+        document.getElementById("mini-judge-avatar").innerHTML = renderJudgeCharacterSVG("think", false);
+        document.getElementById("judge-live-speech").textContent =
+          "“Coba perhatikan gambar sekali lagi!”";
+
+        const wrongBtn = document.getElementById(`choice-btn-${selectedLetter}`);
+        if (wrongBtn) {
+          wrongBtn.classList.add("animate-shake");
+        }
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        tokBanner.classList.add("hidden");
+        modalJudge.innerHTML = renderJudgeCharacterSVG("think", false);
+
+        pointsBadge.classList.add("hidden");
+        pointsBadge.classList.remove("flex");
+
+        modalTitle.textContent = "Coba perhatikan gambar sekali lagi!";
+        modalTitle.className = "text-2xl sm:text-3xl font-extrabold text-orange-600 mt-2";
+
+        // Sembunyikan penjelasan kunci sebelum murid mencoba lagi
+        reasonBox.classList.add("hidden");
+
+        actionsEl.innerHTML = `
+          <button onclick="retryCurrentTrial()"
+            class="clay-btn clay-btn-orange text-xl sm:text-2xl font-extrabold px-9 py-4 rounded-full flex items-center gap-3">
+            <span>🔍</span>
+            <span>COBA LAGI</span>
+          </button>
+        `;
+
+        currentModalSpeech = "Coba perhatikan gambar sekali lagi!";
+        setTimeout(() => speakText(currentModalSpeech), 250);
+      }
+    }
+
+    function retryCurrentTrial() {
+      playPop(520);
+      const modal = document.getElementById("feedback-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      renderChoices(TRIALS[currentTrialIndex]);
+    }
+
+    function proceedNextTrial() {
+      playPop(620);
+      const modal = document.getElementById("feedback-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+
+      if (currentTrialIndex < TRIALS.length - 1) {
+        currentTrialIndex++;
+        loadTrial(currentTrialIndex);
+      } else {
+        showFinalResults();
+      }
+    }
+
+    // =========================================================================
+    // 8. PAPAN HASIL SIDANG & KATEGORI PENGHARGAAN
+    // =========================================================================
+    function getAwardCategory(score) {
+      if (score >= 90) return "🏆 Hakim Super Cerdas!";
+      if (score >= 70) return "🌟 Hakim Hebat!";
+      if (score >= 50) return "🎖️ Hakim Muda!";
+      return "💪 Terus Berlatih, Hakim Cilik!";
+    }
+
+    function showFinalResults() {
+      playGavelKnockAndCheer();
+      launchConfetti(65);
+      showScreen("screen-result");
+
+      document.getElementById("final-score").textContent = totalScore;
+      document.getElementById("final-correct-count").textContent = firstTryCorrectCount;
+
+      const categoryText = getAwardCategory(totalScore);
+      document.getElementById("result-category").textContent = categoryText;
+
+      // Render 5 ikon bintang penghargaan sesuai skor (setiap kelipatan 20 = 1 bintang menyala)
+      const starCount = Math.max(1, Math.round(totalScore / 20));
+      const finalStarsRow = document.getElementById("final-stars-row");
+      finalStarsRow.innerHTML = [1, 2, 3, 4, 5]
+        .map((num) => {
+          const active = num <= starCount;
+          return `
+            <span class="text-4xl sm:text-6xl ${active ? 'animate-twinkle' : 'opacity-30 grayscale'}" style="animation-delay: ${num * 0.15}s;">
+              ⭐
+            </span>
+          `;
+        })
+        .join("");
+
+      document.getElementById("medal-ceremony-svg").innerHTML = renderJudgeCharacterSVG("medal", false);
+
+      setTimeout(() => {
+        speakText(
+          `Selamat, Hakim Cilik! Nilaimu ${totalScore}. Predikatmu adalah ${categoryText}. Kamu sudah belajar memilih kalimat yang paling tepat berdasarkan gambar. Teruslah membaca, mengamati, dan berpikir cermat!`
+        );
+      }, 600);
+    }
+
+    function launchConfetti(count = 45) {
+      const colors = ["#facc15", "#fb923c", "#38bdf8", "#34d399", "#f472b6", "#a78bfa"];
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.top = `-20px`;
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = `${1.8 + Math.random() * 1.8}s`;
+        piece.style.animationDelay = `${Math.random() * 0.35}s`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 3800);
+      }
+    }
+
+    // =========================================================================
+    // 9. INISIALISASI ILUSTRASI AWAL
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("intro-courtroom-svg").innerHTML = renderCourtroomIntroSVG();
+      document.getElementById("guide-judge-svg").innerHTML = renderJudgeCharacterSVG("happy", false);
+      document.getElementById("goodbye-svg").innerHTML = renderJudgeCharacterSVG("medal", false);
+    });
+  </script>
+</body>
+</html>
